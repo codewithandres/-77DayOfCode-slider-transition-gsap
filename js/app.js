@@ -1,6 +1,6 @@
 import { DATA } from './data.js';
 import { select, create, selectAll } from './helper.js';
-import { gsap } from 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+//import { gsap } from 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
 
 const keyCodes = {
 	LEFT: 37,
@@ -60,4 +60,17 @@ window.addEventListener('load', () => {
 		});
 	};
 	generateList();
+
+	const list = selectAll('.picture');
+
+	list.at(-1)
+		.querySelector('img')
+		.addEventListener('load', () => {
+			gsap.to(list, {
+				autoAlpha: 1,
+				delay: 0.5,
+				duration: 0.4,
+				ease: 'power1.inOut',
+			}).then(() => (isAnimating = false));
+		});
 });
