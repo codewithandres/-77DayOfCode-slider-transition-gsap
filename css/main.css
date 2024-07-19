@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+*,
+::after,
+::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+html {
+	block-size: 100%;
+	overflow: hidden;
+	height: fill-available;
+	scroll-behavior: smooth;
+}
+body {
+	block-size: 100%;
+	font-family: 'Mulish', sans-serif;
+	overscroll-behavior: none;
+	background-color: hsl(0, 0%, 93%);
+	color: hsl(0, 0%, 100%);
+}
+.main {
+	block-size: 700px;
+	inline-size: 90%;
+	background-color: white;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 30px;
+
+	& > .details {
+		position: absolute;
+		visibility: hidden;
+		overflow: hidden;
+		border-radius: 30px;
+		box-shadow: 0 10px 15px hsla(0, 0%, 0%, 0.1);
+	}
+}
+.picture {
+	position: absolute;
+	width: 350px;
+	height: 350px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) perspective(300px);
+	border-radius: 30px;
+	overflow: hidden;
+	backface-visibility: hidden;
+	box-shadow: 0 1px 15px hsla(0, 0%, 0%, 0.1);
+	visibility: 0;
+	opacity: 0;
+}
+img,
+.previw {
+	width: 100%;
+	height: 100%;
+	display: block;
+	object-fit: cover;
+}
+.title {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 30px;
+	width: 250px;
+	white-space: none;
+	text-transform: uppercase;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
