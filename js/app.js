@@ -10,6 +10,9 @@ const keyCodes = {
 const PADDING = 30;
 const ELEMENT_ZISE = 350;
 
+
+
+
 window.addEventListener('load', () => {
 	const main = select('.main');
 	const details = select('.main > .details');
@@ -43,9 +46,7 @@ window.addEventListener('load', () => {
 			}
 
 			if (index < mid) {
-				gsap.to(picture, {
-					x: -((ELEMENT_ZISE + PADDING) * (mid - index)),
-				});
+				gsap.to(picture, { x: -((ELEMENT_ZISE + PADDING) * (mid - index)) });
 			}
 
 			if (index > mid) {
@@ -61,14 +62,45 @@ window.addEventListener('load', () => {
 
 	const list = selectAll('.picture');
 
-	list.at(-1)
-		.querySelector('img')
-		.addEventListener('load', () => {
-			gsap.to(list, {
-				autoAlpha: 1,
-				delay: 0.5,
-				duration: 0.4,
-				ease: 'power1.inOut',
-			}).then(() => (isAnimating = false));
-		});
+	list.at(-1).querySelector('img').addEventListener('load', () => {
+
+		gsap.to(list, {
+			autoAlpha: 1,
+			delay: 0.5,
+			duration: 0.4,
+			ease: 'power1.inOut',
+		}).then(() => (isAnimating = false));
+	});
+
+	const animate = (list, direction, clicked = null) => { };
+
+	const showDetails = event => { };
+
+	selectAll('.picture').forEach((a) => a.addEventListener('click',
+		() => !isAnimating && showDetails(a)));
+
+	window.addEventListener('keydown', event => {
+		const { LEFT, RIGHT } = keyCodes;
+		const list = selectAll('.picture');
+
+		if (keyCodes === LEFT && !isAnimating) {
+			animate(list, 'right');
+		};
+
+		if (keyCodes === RIGHT && !isAnimating) {
+			animate(list, 'left');
+		};
+	});
+
+	window.addEventListener('wheel', event => {
+		const list = selectAll('.picture');
+		if (event.deltaX < 0 && !isAnimating) {
+			animate(list, 'right');
+		};
+
+		if (event.deltaX > 0 && !isAnimating) {
+			animate(list, 'left');
+		};
+	});
 });
+
