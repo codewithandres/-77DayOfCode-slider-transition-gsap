@@ -1,6 +1,7 @@
 import { DATA } from './data.js';
 import { select, create, selectAll } from './helper.js';
-//import { gsap } from 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+
+gsap.registerPlugin(Flip);
 
 const keyCodes = {
 	LEFT: 37,
@@ -10,13 +11,10 @@ const keyCodes = {
 const PADDING = 30;
 const ELEMENT_ZISE = 350;
 
-
-
-
 window.addEventListener('load', () => {
 	const main = select('.main');
-	const details = select('.main > .details');
-	const mainImage = select('.main > .details > img');
+	const details = select('.main > .detail');
+	const mainImage = select('.main > .detail > img');
 
 	let activeItem = null;
 	let isAnimating = true;
@@ -74,10 +72,65 @@ window.addEventListener('load', () => {
 
 	const animate = (list, direction, clicked = null) => { };
 
-	const showDetails = event => { };
+	const showDetails = e => {
+		console.log(e.querySelector('img').src);
+		if (activeItem) {
+			return hidenDEtails();
+		};
 
-	selectAll('.picture').forEach((a) => a.addEventListener('click',
-		() => !isAnimating && showDetails(a)));
+		isAnimating = true;
+
+		const onLoad = () => {
+			gsap.set(e, { autoAlpha: 0 });
+
+			const text = e.querySelector('.title').textContent;
+			const list = selectAll('.picture');
+			const index = list.indexOf(e);
+
+			if (index > -1) {
+				//animate out item
+			};
+
+			const detailsTaitel = details.querySelector('.title');
+			detailsTaitel.textContent = text;
+
+			Flip.fit(details, e);
+			const state = Flip.getState(details, e);
+
+			gsap.set(main, { clearProps: true });
+			gsap.set(details, {
+				visibility: "visible",
+				overflow: "hidden",
+				ease: "power2.inOut",
+				position: "absolute",
+				width: "350px",
+				height: "350px",
+				scrollTo: { y: 0, x: 0 },
+			});
+
+			Flip.from(state, {
+				onComplete: () => gsap.set(details, { overflow: "auto" }),
+			}).to(details, {
+				duration: 2,
+				zIndex: 10000,
+				width: '100%',
+				height: '100%',
+				transform: 'none',
+				ease: "power2.inOut",
+			}).then(() => (isAnimating = false));
+
+			mainImage.removeEventListener('load', onLoad);
+			document.addEventListener('click', () => !isAnimating && showDetails());
+		};
+
+		mainImage.src = e.querySelector("img").src;
+		mainImage.addEventListener("load", onLoad);
+	};
+
+	const hidenDEtails = () => { };
+
+	selectAll('.picture').forEach((a) =>
+		a.addEventListener('click', () => !isAnimating && showDetails(a)));
 
 	window.addEventListener('keydown', event => {
 		const { LEFT, RIGHT } = keyCodes;
