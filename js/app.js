@@ -44,15 +44,13 @@ window.addEventListener('load', () => {
 
 			if (index < mid) {
 				gsap.to(picture, {
-					x: (ELEMENT_ZISE - PADDING) * (mid - index),
+					x: -((ELEMENT_ZISE + PADDING) * (mid - index)),
 				});
 			}
 
 			if (index > mid) {
 				count++;
-				gsap.to(picture, {
-					x: (ELEMENT_ZISE - PADDING) * count,
-				});
+				gsap.to(picture, { x: (ELEMENT_ZISE + PADDING) * count });
 			}
 
 			picture.appendChild(img);
