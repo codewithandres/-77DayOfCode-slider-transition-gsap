@@ -1,5 +1,6 @@
 import { select, create, selectAll } from './helper.js';
 import { DATA } from './data.js';
+
 gsap.registerPlugin(Flip);
 
 const keyCodes = {
@@ -18,12 +19,14 @@ window.addEventListener('load', () => {
 	let activeItem = null;
 	let isAnimating = true;
 
-	const generateList = function () {
+	const generateList = () => {
 		const mid = Math.floor(DATA.length / 2);
 		let count = 0;
+
 		DATA.forEach((d, index) => {
 			const picture = create('div');
 			const title = create('div');
+
 			picture.classList.add('picture');
 			title.classList.add('title');
 			title.textContent = d.title;
@@ -58,17 +61,21 @@ window.addEventListener('load', () => {
 	generateList();
 
 	const list = selectAll('.picture');
-	list[list.length - 1].querySelector('img').addEventListener('load', () => {
-		gsap.to(list, {
-			autoAlpha: 1,
-			delay: 0.5,
-			duration: 0.4,
-			ease: Power1.easeInOut,
-		}).then(() => (isAnimating = false));
-	});
 
-	const animate = function (list, direction, clicked = null) {
+	list.at(-1)
+		.querySelector('img')
+		.addEventListener('load', () => {
+			gsap.to(list, {
+				autoAlpha: 1,
+				delay: 0.5,
+				duration: 0.4,
+				ease: Power1.easeInOut,
+			}).then(() => (isAnimating = false));
+		});
+
+	const animate = (list, direction, clicked = null) => {
 		isAnimating = true;
+
 		const selectedIndex = list.indexOf(clicked);
 		const activeIndex = list.findIndex((el) =>
 			el.classList.contains('active'),
@@ -157,7 +164,7 @@ window.addEventListener('load', () => {
 		});
 	};
 
-	const animateInOutItems = function (list, selectedIndex, dir = 'out') {
+	const animateInOutItems = (list, selectedIndex, dir = 'out') => {
 		const animateLeft = (propX) => {
 			return dir === 'in'
 				? {
@@ -208,9 +215,10 @@ window.addEventListener('load', () => {
 		});
 	};
 
-	const showDetails = function (e) {
+	const showDetails = (e) => {
 		if (!e.classList.contains('active')) {
 			const propX = gsap.getProperty(e, 'x');
+
 			animate(
 				selectAll('.picture'),
 				propX < 0 ? 'right' : 'left',
@@ -226,6 +234,7 @@ window.addEventListener('load', () => {
 		isAnimating = true;
 		const onLoad = () => {
 			gsap.set(e, { autoAlpha: 0 });
+
 			const text = e.querySelector('.title').textContent;
 			const list = selectAll('.picture');
 			const index = list.indexOf(e);
@@ -279,8 +288,9 @@ window.addEventListener('load', () => {
 		activeItem = e;
 	};
 
-	const hideDetails = function () {
+	const hideDetails = () => {
 		isAnimating = true;
+
 		document.removeEventListener('click', hideDetails);
 
 		const state = Flip.getState(details);
