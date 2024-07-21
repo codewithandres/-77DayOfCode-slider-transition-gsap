@@ -15,7 +15,7 @@ html {
 
 body {
 	block-size: 100%;
-	font-family: 'Aboreto', cursive, system-ui, sans-serif;
+	font-family: "Aboreto", cursive, system-ui, sans-serif;
 	overscroll-behavior: none;
 	background-color: #f1f0ea;
 	color: white;
@@ -31,7 +31,7 @@ body {
 	transform: translate(-50%, -50%);
 	border-radius: 30px;
 
-	& > .detail {
+	&>.detail {
 		position: absolute;
 		visibility: hidden;
 		overflow: hidden;

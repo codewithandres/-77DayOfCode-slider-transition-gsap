@@ -1,5 +1,5 @@
-const select = (elemet) => document.querySelector(elemet);
-const selectAll = (elemet) => Array.from(document.querySelectorAll(elemet));
-const create = (element) => document.createElement(element);
+const select = (elem) => document.querySelector(elem);
+const selectAll = (elem) => Array.from(document.querySelectorAll(elem));
+const create = (elem) => document.createElement(elem);
 
 export { select, selectAll, create };
