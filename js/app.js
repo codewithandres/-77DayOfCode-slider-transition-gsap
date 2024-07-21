@@ -19,9 +19,11 @@ window.addEventListener('load', () => {
 	let activeItem = null;
 	let isAnimating = true;
 
-	const generateList = function () {
+	const generateList = () => {
 		const mid = Math.floor(DATA.length / 2);
+
 		let count = 0;
+
 		DATA.forEach((d, index) => {
 			const picture = create('div');
 			const title = create('div');
@@ -59,16 +61,18 @@ window.addEventListener('load', () => {
 	generateList();
 
 	const list = selectAll('.picture');
-	list[list.length - 1].querySelector('img').addEventListener('load', () => {
-		gsap.to(list, {
-			autoAlpha: 1,
-			delay: 0.5,
-			duration: 0.4,
-			ease: Power1.easeInOut,
-		}).then(() => (isAnimating = false));
-	});
+	list.at(-1)
+		.querySelector('img')
+		.addEventListener('load', () => {
+			gsap.to(list, {
+				autoAlpha: 1,
+				delay: 0.5,
+				duration: 0.4,
+				ease: Power1.easeInOut,
+			}).then(() => (isAnimating = false));
+		});
 
-	const animate = function (list, direction, clicked = null) {
+	const animate = (list, direction, clicked = null) => {
 		isAnimating = true;
 		const selectedIndex = list.indexOf(clicked);
 		const activeIndex = list.findIndex((el) =>
@@ -158,7 +162,7 @@ window.addEventListener('load', () => {
 		});
 	};
 
-	const animateInOutItems = function (list, selectedIndex, dir = 'out') {
+	const animateInOutItems = (list, selectedIndex, dir = 'out') => {
 		const animateLeft = (propX) => {
 			return dir === 'in'
 				? {
@@ -209,7 +213,7 @@ window.addEventListener('load', () => {
 		});
 	};
 
-	const showDetails = function (e) {
+	const showDetails = (e) => {
 		if (!e.classList.contains('active')) {
 			const propX = gsap.getProperty(e, 'x');
 			animate(
@@ -280,7 +284,7 @@ window.addEventListener('load', () => {
 		activeItem = e;
 	};
 
-	const hideDetails = function () {
+	const hideDetails = () => {
 		isAnimating = true;
 		document.removeEventListener('click', hideDetails);
 
