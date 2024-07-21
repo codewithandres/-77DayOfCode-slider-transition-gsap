@@ -1,6 +1,5 @@
 import { select, create, selectAll } from './helper.js';
 import { DATA } from './data.js';
-
 gsap.registerPlugin(Flip);
 
 const keyCodes = {
@@ -19,11 +18,9 @@ window.addEventListener('load', () => {
 	let activeItem = null;
 	let isAnimating = true;
 
-	const generateList = () => {
+	const generateList = function () {
 		const mid = Math.floor(DATA.length / 2);
-
 		let count = 0;
-
 		DATA.forEach((d, index) => {
 			const picture = create('div');
 			const title = create('div');
@@ -61,18 +58,16 @@ window.addEventListener('load', () => {
 	generateList();
 
 	const list = selectAll('.picture');
-	list.at(-1)
-		.querySelector('img')
-		.addEventListener('load', () => {
-			gsap.to(list, {
-				autoAlpha: 1,
-				delay: 0.5,
-				duration: 0.4,
-				ease: Power1.easeInOut,
-			}).then(() => (isAnimating = false));
-		});
+	list[list.length - 1].querySelector('img').addEventListener('load', () => {
+		gsap.to(list, {
+			autoAlpha: 1,
+			delay: 0.5,
+			duration: 0.4,
+			ease: Power1.easeInOut,
+		}).then(() => (isAnimating = false));
+	});
 
-	const animate = (list, direction, clicked = null) => {
+	const animate = function (list, direction, clicked = null) {
 		isAnimating = true;
 		const selectedIndex = list.indexOf(clicked);
 		const activeIndex = list.findIndex((el) =>
@@ -162,7 +157,7 @@ window.addEventListener('load', () => {
 		});
 	};
 
-	const animateInOutItems = (list, selectedIndex, dir = 'out') => {
+	const animateInOutItems = function (list, selectedIndex, dir = 'out') {
 		const animateLeft = (propX) => {
 			return dir === 'in'
 				? {
@@ -213,7 +208,7 @@ window.addEventListener('load', () => {
 		});
 	};
 
-	const showDetails = (e) => {
+	const showDetails = function (e) {
 		if (!e.classList.contains('active')) {
 			const propX = gsap.getProperty(e, 'x');
 			animate(
@@ -284,7 +279,7 @@ window.addEventListener('load', () => {
 		activeItem = e;
 	};
 
-	const hideDetails = () => {
+	const hideDetails = function () {
 		isAnimating = true;
 		document.removeEventListener('click', hideDetails);
 
