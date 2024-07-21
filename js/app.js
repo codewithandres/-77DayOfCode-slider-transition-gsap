@@ -44,7 +44,9 @@ window.addEventListener('load', () => {
 			}
 
 			if (index < mid) {
-				gsap.to(picture, { x: -((ELEMENT_ZISE + PADDING) * (mid - index)) });
+				gsap.to(picture, {
+					x: -((ELEMENT_ZISE + PADDING) * (mid - index)),
+				});
 			}
 
 			if (index > mid) {
@@ -60,23 +62,21 @@ window.addEventListener('load', () => {
 
 	const list = selectAll('.picture');
 
-	list.at(-1).querySelector('img').addEventListener('load', () => {
+	list.at(-1)
+		.querySelector('img')
+		.addEventListener('load', () => {
+			gsap.to(list, {
+				autoAlpha: 1,
+				delay: 0.5,
+				duration: 0.4,
+				ease: 'power1.inOut',
+			}).then(() => (isAnimating = false));
+		});
 
-		gsap.to(list, {
-			autoAlpha: 1,
-			delay: 0.5,
-			duration: 0.4,
-			ease: 'power1.inOut',
-		}).then(() => (isAnimating = false));
-	});
+	const animate = (list, direction, clicked = null) => {};
 
-	const animate = (list, direction, clicked = null) => { };
-
-	const showDetails = e => {
-		console.log(e.querySelector('img').src);
-		if (activeItem) {
-			return hidenDEtails();
-		};
+	const showDetails = (e) => {
+		if (activeItem) hidenDEtails();
 
 		isAnimating = true;
 
@@ -89,71 +89,122 @@ window.addEventListener('load', () => {
 
 			if (index > -1) {
 				//animate out item
-			};
+			}
 
-			const detailsTaitel = details.querySelector('.title');
-			detailsTaitel.textContent = text;
+			const detailsTitle = details.querySelector('.title');
 
+			detailsTitle.textContent = text;
 			Flip.fit(details, e);
-			const state = Flip.getState(details, e);
+
+			const state = Flip.getState(details);
 
 			gsap.set(main, { clearProps: true });
+
 			gsap.set(details, {
-				visibility: "visible",
-				overflow: "hidden",
-				ease: "power2.inOut",
-				position: "absolute",
-				width: "350px",
-				height: "350px",
+				visibility: 'visible',
+				overflow: 'hidden',
+				ease: 'power2.inOut',
+				position: 'absolute',
+				width: '350px',
+				height: '350px',
 				scrollTo: { y: 0, x: 0 },
 			});
 
 			Flip.from(state, {
-				onComplete: () => gsap.set(details, { overflow: "auto" }),
-			}).to(details, {
-				duration: 2,
-				zIndex: 10000,
-				width: '100%',
-				height: '100%',
-				transform: 'none',
-				ease: "power2.inOut",
-			}).then(() => (isAnimating = false));
+				onComplete: () => gsap.set(details, { overflow: 'auto' }),
+			})
+				.to(details, {
+					duration: 2,
+					zIndex: 1000,
+					ease: 'power2.inOut',
+					height: '100%',
+					width: '100%',
+					transform: 'none',
+				})
+				.then(() => (isAnimating = false));
 
 			mainImage.removeEventListener('load', onLoad);
-			document.addEventListener('click', () => !isAnimating && showDetails());
+			document.addEventListener(
+				'click',
+				() => !isAnimating && hidenDEtails(),
+			);
 		};
 
-		mainImage.src = e.querySelector("img").src;
-		mainImage.addEventListener("load", onLoad);
+		mainImage.src = e.querySelector('img').src;
+		mainImage.addEventListener('load', onLoad);
+
+		activeItem = e;
 	};
 
-	const hidenDEtails = () => { };
+	const hidenDEtails = () => {
+		isAnimating = true;
+
+		document.removeEventListener(
+			'click',
+			() => !isAnimating && showDetails(a),
+		);
+		const state = Flip.getState(details);
+
+		Flip.fit(details, activeItem);
+		gsap.to(details, {
+			height: '100%',
+			delay: 0.2,
+			ease: 'power2.inOut',
+		});
+
+		gsap.to(details, { delay: 0.2 });
+
+		Flip.from(state, {
+			duration: 2,
+			ease: 'power2.inOut',
+			delay: 0.2,
+			onComplete: () => (activeItem = null),
+		})
+			.set(details, {
+				clearProps: true,
+				width: 350,
+				height: 350,
+				top: '50%',
+				left: '50%',
+				transform: 'translate(-50%, -50%)',
+			})
+			.then(() => (isAnimating = false));
+
+		const tem = activeItem;
+		const list = selectAll('.picture');
+		const index = list.indexOf(tem);
+
+		if (index > -1) {
+			gsap.set(tem, { delay: 2.2, autoAlpha: 1 });
+			//Animate in item
+		}
+	};
 
 	selectAll('.picture').forEach((a) =>
-		a.addEventListener('click', () => !isAnimating && showDetails(a)));
+		a.addEventListener('click', () => !isAnimating && showDetails(a)),
+	);
 
-	window.addEventListener('keydown', event => {
+	window.addEventListener('keydown', (event) => {
 		const { LEFT, RIGHT } = keyCodes;
 		const list = selectAll('.picture');
 
 		if (keyCodes === LEFT && !isAnimating) {
 			animate(list, 'right');
-		};
+		}
 
 		if (keyCodes === RIGHT && !isAnimating) {
 			animate(list, 'left');
-		};
+		}
 	});
 
-	window.addEventListener('wheel', event => {
+	window.addEventListener('wheel', (event) => {
 		const list = selectAll('.picture');
 		if (event.deltaX < 0 && !isAnimating) {
 			animate(list, 'right');
-		};
+		}
 
 		if (event.deltaX > 0 && !isAnimating) {
 			animate(list, 'left');
-		};
+		}
 	});
 });
-
