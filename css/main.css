@@ -1,3 +1,4 @@
+/* Reset styles */
 *,
 *::before,
 *::after {
@@ -31,6 +32,7 @@ body {
 	transform: translate(-50%, -50%);
 	border-radius: 30px;
 
+	/* Styles for the detail view container */
 	&>.detail {
 		position: absolute;
 		visibility: hidden;

@@ -1,8 +1,11 @@
+// This file contains the main application logic for the image carousel
+// It imports helper functions and data, and initializes the carousel
 import { select, create, selectAll } from './helper.js';
 import { DATA } from './data.js';
 
 gsap.registerPlugin(Flip);
 
+// Object containing keyCodes for left and right arrow keys
 const keyCodes = {
 	LEFT: 37,
 	RIGHT: 39,
@@ -12,6 +15,7 @@ const PADDING = 30;
 const ELEMENT_SIZE = 350;
 
 window.addEventListener('load', () => {
+	// Select main elements and initialize variables
 	const main = select('.main');
 	const details = select('.main > .detail');
 	const mainImage = select('.main > .detail > img');
@@ -20,6 +24,7 @@ window.addEventListener('load', () => {
 	let isAnimating = true;
 
 	const generateList = () => {
+		// Calculate the middle index of the data array
 		const mid = Math.floor(DATA.length / 2);
 		let count = 0;
 
@@ -27,6 +32,7 @@ window.addEventListener('load', () => {
 			const picture = create('div');
 			const title = create('div');
 
+			// Set up the picture and title elements for each data item
 			picture.classList.add('picture');
 			title.classList.add('title');
 			title.textContent = d.title;
@@ -51,6 +57,7 @@ window.addEventListener('load', () => {
 			if (index > mid) {
 				count++;
 				gsap.to(picture, { x: (ELEMENT_SIZE + PADDING) * count });
+				// Get all the picture elements
 			}
 
 			picture.appendChild(img);
@@ -94,6 +101,7 @@ window.addEventListener('load', () => {
 		let duration = 0;
 		let next = null;
 
+		// Animate each picture based on the selected direction
 		list.forEach((pic, i) => {
 			const propX = gsap.getProperty(pic, 'x');
 			const translateValueX =
